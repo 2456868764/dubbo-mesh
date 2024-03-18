@@ -19,6 +19,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"net/http"
 
 	greet "dubbo-mesh/helloworld/proto"
 	"dubbo.apache.org/dubbo-go/v3/client"
@@ -39,9 +41,19 @@ func main() {
 		panic(err)
 	}
 
-	resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		logger.Error(err)
-	}
-	logger.Infof("Greet response: %s", resp.Greeting)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/greet", func(w http.ResponseWriter, r *http.Request) {
+		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
+		if err != nil {
+			logger.Error(err)
+			w.Write([]byte(fmt.Sprintf("response error %v", err)))
+			return
+		}
+		logger.Infof("Greet response: %s", resp.Greeting)
+		w.Write([]byte(resp.Greeting))
+	})
+
+	httpSrv := &http.Server{Addr: ":9090", Handler: mux}
+	httpSrv.ListenAndServe()
+
 }

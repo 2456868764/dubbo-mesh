@@ -40,7 +40,9 @@ func main() {
 		server.WithServerProtocol(
 			protocol.WithPort(20000),
 			protocol.WithTriple(),
+			protocol.WithTlsProvider("xds-provider"),
 		),
+		server.WithServerXds(),
 	)
 	if err != nil {
 		panic(err)
