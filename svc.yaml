@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"sleep","service":"sleep"},"name":"sleep","namespace":"foo"},"spec":{"ports":[{"name":"http","port":80}],"selector":{"app":"sleep"}}}
+  creationTimestamp: "2024-03-12T12:21:57Z"
+  labels:
+    app: sleep
+    service: sleep
+  name: sleep
+  namespace: foo
+  resourceVersion: "4790"
+  uid: 833033de-91d3-431d-afe3-b084ac2666e3
+spec:
+  clusterIP: 10.108.255.49
+  clusterIPs:
+  - 10.108.255.49
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: sleep
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

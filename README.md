@@ -47,6 +47,19 @@ func newClientManager(url *common.URL) (*clientManager, error) {
 dubbo-go/registry 目录加 istio 目录
 
 
+# docker 
+
+```shell
+cd pilot/cmd/pilot-agent
+CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o pilot-agent  main.go
+cp pilot-agent ../docker/
+cd ../docker
+docker build -t registry.cn-hangzhou.aliyuncs.com/2456868764/pilot-agent:1.0.0 .
+
+
+```
+
+
 
 # Reference 
 - [xds-protocol](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol#xds-protocol)

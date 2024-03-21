@@ -248,7 +248,7 @@
               "endpoint": {
                 "address":{
                   "pipe": {
-                    "path": "./var/run/dubbomesh/workload-spiffe-uds/socket"
+                    "path": "/Users/jun/GolandProjects/dubbo/dubbo-mesh/var/run/dubbomesh/workload-spiffe-uds/socket"
                   }
                 }
               }
@@ -268,7 +268,7 @@
               "endpoint": {
                 "address":{
                   "pipe": {
-                    "path": "./var/run/dubbomesh/proxy/XDS"
+                    "path": "/Users/jun/GolandProjects/dubbo/dubbo-mesh/var/run/dubbomesh/proxy/XDS"
                   }
                 }
               }

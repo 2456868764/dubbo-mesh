@@ -16,6 +16,7 @@ package options
 
 import (
 	"dubbo-mesh/pilot/pkg/constants"
+	"istio.io/istio/pilot/cmd/pilot-agent/status"
 	"istio.io/istio/pkg/env"
 	"istio.io/istio/pkg/jwt"
 	"istio.io/istio/pkg/security"
@@ -25,11 +26,11 @@ import (
 )
 
 var (
-	InstanceIPVar   = env.Register("INSTANCE_IP", "", "")
-	PodNameVar      = env.Register("POD_NAME", "", "")
-	PodNamespaceVar = env.Register("POD_NAMESPACE", "", "")
-	//kubeAppProberNameVar = env.Register(status.KubeAppProberEnvName, "", "")
-	ProxyConfigEnv = env.Register(
+	InstanceIPVar        = env.Register("INSTANCE_IP", "", "")
+	PodNameVar           = env.Register("POD_NAME", "", "")
+	PodNamespaceVar      = env.Register("POD_NAMESPACE", "", "")
+	kubeAppProberNameVar = env.Register(status.KubeAppProberEnvName, "", "")
+	ProxyConfigEnv       = env.Register(
 		"PROXY_CONFIG",
 		"",
 		"The proxy configuration. This will be set by the injection - gateways will use file mounts.",

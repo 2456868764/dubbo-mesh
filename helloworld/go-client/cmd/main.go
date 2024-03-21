@@ -21,6 +21,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 
 	greet "dubbo-mesh/helloworld/proto"
 	"dubbo.apache.org/dubbo-go/v3/client"
@@ -29,9 +30,19 @@ import (
 )
 
 func main() {
+	//cli, err := client.NewClient(
+	//	client.WithClientURL("127.0.0.1:20000"),
+	//)
+
+	url := "xds://httpbin.dubbo.svc.cluster.local:8000"
+	if newUrl, ok := os.LookupEnv("DUBBO_SERVER_URL"); ok {
+		url = newUrl
+	}
+
 	cli, err := client.NewClient(
-		client.WithClientURL("127.0.0.1:20000"),
+		client.WithClientURL(url),
 	)
+
 	if err != nil {
 		panic(err)
 	}

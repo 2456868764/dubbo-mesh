@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"istio.io/api/annotation"
+	meshconfig "istio.io/api/mesh/v1alpha1"
 	"istio.io/istio/pilot/pkg/model"
 	"istio.io/istio/pilot/pkg/util/network"
 	"istio.io/istio/pkg/bootstrap"
@@ -131,6 +132,21 @@ func addFlags(proxyCmd *cobra.Command) {
 		"The log path for outlier detection")
 	proxyCmd.PersistentFlags().BoolVar(&proxyArgs.EnableProfiling, "profiling", true,
 		"Enable profiling via web interface host:port/debug/pprof/.")
+}
+
+func initStatusServer(ctx context.Context, proxy *model.Proxy, proxyConfig *meshconfig.ProxyConfig,
+	envoyPrometheusPort int, enableProfiling bool, agent *istio_agent.Agent,
+) error {
+	//o := options.NewStatusServerOptions(proxy, proxyConfig, agent)
+	//o.EnvoyPrometheusPort = envoyPrometheusPort
+	//o.EnableProfiling = enableProfiling
+	//o.Context = ctx
+	//statusServer, err := status.NewServer(*o)
+	//if err != nil {
+	//	return err
+	//}
+	//go statusServer.Run(ctx)
+	return nil
 }
 
 func initProxy(args []string) (*model.Proxy, error) {

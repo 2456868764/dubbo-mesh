@@ -38,7 +38,7 @@ func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest
 func main() {
 	srv, err := server.NewServer(
 		server.WithServerProtocol(
-			protocol.WithPort(20000),
+			protocol.WithPort(8000),
 			protocol.WithTriple(),
 			protocol.WithTlsProvider("xds-provider"),
 		),
