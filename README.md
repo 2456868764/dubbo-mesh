@@ -67,3 +67,4 @@ docker build -t registry.cn-hangzhou.aliyuncs.com/2456868764/pilot-agent:1.0.0 .
 - [Istio 流量管理实现机制深度解析](https://cloudnative.to/blog/istio-traffic-management-impl-intro/)
 - [component and port](https://tetrate.io/blog/istio-component-ports-and-functions-in-detail/)
 - [Sidecar injection, transparent traffic hijacking, and routing process in Istio explained in detail](https://jimmysongio.medium.com/sidecar-injection-transparent-traffic-hijacking-and-routing-process-in-istio-explained-in-detail-d53e244e0348)
+- https://www.modb.pro/db/128868

@@ -18,53 +18,17 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"net/http"
-	"os"
-
-	greet "dubbo-mesh/helloworld/proto"
-	"dubbo.apache.org/dubbo-go/v3/client"
+	"dubbo-mesh/helloworld/go-client/api"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
-	"github.com/dubbogo/gost/log/logger"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	//cli, err := client.NewClient(
-	//	client.WithClientURL("127.0.0.1:20000"),
-	//)
 
-	url := "xds://httpbin.dubbo.svc.cluster.local:8000"
-	if newUrl, ok := os.LookupEnv("DUBBO_SERVER_URL"); ok {
-		url = newUrl
-	}
+	r := gin.New()
+	r.GET("/greet", api.Greet)
+	r.GET("/ping", api.Ping)
 
-	cli, err := client.NewClient(
-		client.WithClientURL(url),
-	)
-
-	if err != nil {
-		panic(err)
-	}
-
-	svc, err := greet.NewGreetService(cli)
-	if err != nil {
-		panic(err)
-	}
-
-	mux := http.NewServeMux()
-	mux.HandleFunc("/greet", func(w http.ResponseWriter, r *http.Request) {
-		resp, err := svc.Greet(context.Background(), &greet.GreetRequest{Name: "hello world"})
-		if err != nil {
-			logger.Error(err)
-			w.Write([]byte(fmt.Sprintf("response error %v", err)))
-			return
-		}
-		logger.Infof("Greet response: %s", resp.Greeting)
-		w.Write([]byte(resp.Greeting))
-	})
-
-	httpSrv := &http.Server{Addr: ":9090", Handler: mux}
-	httpSrv.ListenAndServe()
+	r.Run(":9090")
 
 }

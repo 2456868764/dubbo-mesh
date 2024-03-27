@@ -19,6 +19,7 @@ package main
 
 import (
 	"context"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 
 	greet "dubbo-mesh/helloworld/proto"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
@@ -32,6 +33,7 @@ type GreetTripleServer struct {
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	resp := &greet.GreetResponse{Greeting: req.Name}
+	ctx = context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{"server_info": "dubbo httpbin"})
 	return resp, nil
 }
 

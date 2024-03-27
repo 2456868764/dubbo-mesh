@@ -13,12 +13,12 @@
     }
   ],
   "node": {
-    "id": "sidecar~10.10.241.72~.~.svc.cluster.local",
+    "id": "sidecar~10.10.188.11~.~.svc.cluster.local",
     "metadata": {
       "ENVOY_PROMETHEUS_PORT": 15090,
       "ENVOY_STATUS_PORT": 15021,
       "GENERATOR": "grpc",
-      "INSTANCE_IPS": "10.10.241.72,192.168.31.72,192.168.64.1,fdde:51fd:f598:5892:a8:625f:d2e6:37e9",
+      "INSTANCE_IPS": "10.10.188.11,192.168.31.72,192.168.64.1,fdde:51fd:f598:5892:a8:625f:d2e6:37e9",
       "ISTIO_VERSION": "unknown",
       "NAME": "httpbin",
       "NAMESPACE": "foo",
