@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update  \
-        && apt-get install --no-install-recommends -y ca-certificates curl iptables iproute2 iputils-ping knot-dnsutils netcat tcpdump conntrack bsdmainutils net-tools lsof sudo  \
+        && apt-get install --no-install-recommends -y ca-certificates curl iptables iproute2 iputils-ping knot-dnsutils netcat tcpdump conntrack bsdmainutils net-tools lsof sudo jq \
         && update-ca-certificates  \
         && apt-get upgrade -y  \
         && apt-get clean  \
@@ -13,7 +13,6 @@ RUN useradd -m --uid 1337 istio-proxy  \
 
 WORKDIR /
 ARG TARGETARCH
-COPY dubboapp /usr/local/bin/dubboapp
+COPY ${TARGETARCH:-amd64}/dubboapp  /usr/local/bin/dubboapp
 
-# The pilot-agent will bootstrap Envoy.
 ENTRYPOINT ["/usr/local/bin/dubboapp"]

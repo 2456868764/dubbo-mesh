@@ -51,7 +51,7 @@ This example demonstrates the basic usage of dubbo-go as an RPC framework. Check
 
 [//]: # (# generate related stub code with protoc-gen-go and protoc-gen-triple)
 
-[//]: # (protoc --go_out=. --go_opt=paths=source_relative --triple_out=. --triple_opt=paths=source_relative ./greet.proto)
+[//]: # (protoc --go_out=. --go_opt=paths=source_relative --go-triple_out=. --go-triple_opt=paths=source_relative ./greet.proto)
 
 [//]: # (```)
 

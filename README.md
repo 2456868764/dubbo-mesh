@@ -1,64 +1,24 @@
 # dubbo-mesh
+## prebuild
 
-# tri client
-1. dubbo-go/protocol/triple/client.go
-
-```golang
-func newClientManager(url *common.URL) (*clientManager, error) {
-
-	
-// todo(DMwangnima): support TLS in an ideal way
-	var cfg *tls.Config
-	var tlsFlag bool
-
-	var transport http.RoundTripper
-	callType := url.GetParam(constant.CallHTTPTypeKey, constant.CallHTTP2)
-	switch callType {
-	case constant.CallHTTP:
-		transport = &http.Transport{
-			TLSClientConfig: cfg,
-		}
-		cliOpts = append(cliOpts, tri.WithTriple())
-	case constant.CallHTTP2:
-		if tlsFlag {
-			transport = &http2.Transport{
-				TLSClientConfig: cfg,
-			}
-		} else {
-			transport = &http2.Transport{
-				DialTLSContext: func(_ context.Context, network, addr string, _ *tls.Config) (net.Conn, error) {
-					return net.Dial(network, addr)
-				},
-				AllowHTTP: true,
-			}
-		}
-	default:
-		panic(fmt.Sprintf("Unsupported callType: %s", callType))
-	}
-	httpClient := &http.Client{
-		Transport: transport,
-	}
-	
-}
-
-```
-2. registry & serviceDiscovery
-
-dubbo-go/registry 目录加 istio 目录
-
-
-# docker 
+build 项目之前，需要下载项目依赖库 istio 和 dubbo-go 特定分支到本地 external 目录
+执行 make prebuild
 
 ```shell
-cd pilot/cmd/pilot-agent
-CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o pilot-agent  main.go
-cp pilot-agent ../docker/
-cd ../docker
-docker build -t registry.cn-hangzhou.aliyuncs.com/2456868764/pilot-agent:1.0.0 .
-
-
+make prebuild
 ```
 
+
+## build images
+
+```
+  image-buildx-client  Build and push docker image for the dubbo client for cross-platform support
+  image-buildx-httpbin  Build and push docker image for the dubbo httpbin for cross-platform support
+  image-buildx-pilot-agent  Build and push docker image for the pilot agent for cross-platform support
+  image-buildx-sleep  Build and push docker image for the sleep for cross-platform support
+  prebuild         prebuild project
+
+```
 
 
 # Reference 

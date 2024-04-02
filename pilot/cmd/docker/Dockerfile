@@ -16,7 +16,7 @@ ARG TARGETARCH
 # Copy Envoy bootstrap templates used by pilot-agent
 COPY envoy_bootstrap_tmpl.json /var/lib/istio/envoy/envoy_bootstrap_tmpl.json
 COPY gcp_envoy_bootstrap_tmpl.json /var/lib/istio/envoy/gcp_envoy_bootstrap_tmpl.json
-COPY pilot-agent /usr/local/bin/pilot-agent
+COPY ${TARGETARCH:-amd64}/pilot-agent /usr/local/bin/pilot-agent
 
 # The pilot-agent will bootstrap Envoy.
 ENTRYPOINT ["/usr/local/bin/pilot-agent"]

@@ -19,9 +19,9 @@ package main
 
 import (
 	"context"
-	"dubbo.apache.org/dubbo-go/v3/common/constant"
-
+	"dubbo-mesh/helloworld/go-client/utils"
 	greet "dubbo-mesh/helloworld/proto"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
 	_ "dubbo.apache.org/dubbo-go/v3/imports"
 	"dubbo.apache.org/dubbo-go/v3/protocol"
 	"dubbo.apache.org/dubbo-go/v3/server"
@@ -32,8 +32,14 @@ type GreetTripleServer struct {
 }
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
-	resp := &greet.GreetResponse{Greeting: req.Name}
-	ctx = context.WithValue(ctx, constant.AttachmentKey, map[string]interface{}{"server_info": "dubbo httpbin"})
+	attachments := utils.ConvertAttachmentsToMap(ctx.Value(constant.AttachmentKey).(map[string]interface{}))
+	resp := &greet.GreetResponse{Greeting: req.Name, Attachments: attachments}
+	return resp, nil
+}
+
+func (srv *GreetTripleServer) Ping(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
+	attachments := utils.ConvertAttachmentsToMap(ctx.Value(constant.AttachmentKey).(map[string]interface{}))
+	resp := &greet.GreetResponse{Greeting: req.Name, Attachments: attachments}
 	return resp, nil
 }
 

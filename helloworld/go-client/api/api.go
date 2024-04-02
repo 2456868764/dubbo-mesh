@@ -6,6 +6,8 @@ import (
 	greet "dubbo-mesh/helloworld/proto"
 	"dubbo.apache.org/dubbo-go/v3/client"
 	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	"fmt"
+	"github.com/dubbogo/gost/log/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -67,42 +69,72 @@ var defaultTraceHeaders = []string{
 	"X-Httpbin-Trace-Service",
 }
 
+var (
+	cli    *client.Client
+	cliErr error
+	svc    greet.GreetService
+)
+
+func init() {
+	url := utils.GetDUBBOServerUrl()
+	//url := "127.0.0.1:8000"
+	cli, cliErr = client.NewClient(
+		client.WithClientURL(url),
+	)
+	if cliErr != nil {
+		logger.Errorf("can not init client: %v", cliErr)
+		return
+	}
+
+	svc, cliErr = greet.NewGreetService(cli)
+	if cliErr != nil {
+		logger.Errorf("can not svc client: %v", cliErr)
+		return
+	}
+}
+
 func Ping(c *gin.Context) {
-	c.JSON(http.StatusOK, "pong")
+
+	name := c.DefaultQuery("name", "")
+	request := NewResponseFromContext(c)
+	name = fmt.Sprintf("ping %s!", name)
+	ctx := context.WithValue(context.Background(), constant.AttachmentKey, request.Headers)
+	resp, err := svc.Ping(ctx, &greet.GreetRequest{Name: name})
+	if err != nil {
+		c.JSON(http.StatusBadGateway, err.Error())
+		return
+	}
+
+	responseAny := make(map[string]any, 0)
+	responseAny["request"] = request
+	responseAny["response"] = resp
+	c.JSON(http.StatusOK, responseAny)
+}
+
+func Hello(c *gin.Context) {
+	c.JSON(http.StatusOK, "hello")
 }
 
 func Greet(c *gin.Context) {
-	url := utils.GetDUBBOServerUrl()
-	cli, err := client.NewClient(
-		client.WithClientURL(url),
-	)
+	//url := "127.0.0.1:8000"
+	name := c.DefaultQuery("name", "")
+	request := NewResponseFromContext(c)
+	name = fmt.Sprintf("hello world %s!", name)
+	logger.Infof("request headers: %v", request.Headers)
+	attachments := make(map[string]any, 0)
+	for k, v := range request.Headers {
+		attachments[k] = []string{v}
+	}
+	ctx := context.WithValue(context.Background(), constant.AttachmentKey, attachments)
+	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: name})
 	if err != nil {
 		c.JSON(http.StatusBadGateway, err.Error())
 		return
 	}
 
-	svc, err := greet.NewGreetService(cli)
-	if err != nil {
-		c.JSON(http.StatusBadGateway, err.Error())
-		return
-	}
-	ctx := context.Background()
-	resp, err := svc.Greet(ctx, &greet.GreetRequest{Name: "hello world"})
-	if err != nil {
-		c.JSON(http.StatusBadGateway, err.Error())
-		return
-	}
-	attachments := make(map[string]interface{})
-	if ctx.Value(constant.AttachmentKey) != nil {
-		attachments = ctx.Value(constant.AttachmentKey).(map[string]interface{})
-	}
-	response := make(map[string]any)
-	response["attachments"] = attachments
-	response["body"] = resp
-	request := NewResponseFromContext(c)
 	responseAny := make(map[string]any, 0)
 	responseAny["request"] = request
-	responseAny["response"] = response
+	responseAny["response"] = resp
 	c.JSON(http.StatusOK, responseAny)
 }
 

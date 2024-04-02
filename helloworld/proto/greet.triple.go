@@ -64,6 +64,7 @@ var (
 // GreetService is a client for the greet.GreetService service.
 type GreetService interface {
 	Greet(ctx context.Context, req *GreetRequest, opts ...client.CallOption) (*GreetResponse, error)
+	Ping(ctx context.Context, req *GreetRequest, opts ...client.CallOption) (*GreetResponse, error)
 }
 
 // NewGreetService constructs a client for the greet.GreetService service.
@@ -94,9 +95,17 @@ func (c *GreetServiceImpl) Greet(ctx context.Context, req *GreetRequest, opts ..
 	return resp, nil
 }
 
+
+func (c *GreetServiceImpl) Ping(ctx context.Context, req *GreetRequest, opts ...client.CallOption) (*GreetResponse, error) {
+	resp := new(GreetResponse)
+	if err := c.conn.CallUnary(ctx, []interface{}{req}, resp, "Ping", opts...); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
 var GreetService_ClientInfo = client.ClientInfo{
 	InterfaceName: "greet.GreetService",
-	MethodNames:   []string{"Greet"},
+	MethodNames:   []string{"Greet", "Ping"},
 	ConnectionInjectFunc: func(dubboCliRaw interface{}, conn *client.Connection) {
 		dubboCli := dubboCliRaw.(*GreetServiceImpl)
 		dubboCli.conn = conn
@@ -106,6 +115,7 @@ var GreetService_ClientInfo = client.ClientInfo{
 // GreetServiceHandler is an implementation of the greet.GreetService service.
 type GreetServiceHandler interface {
 	Greet(context.Context, *GreetRequest) (*GreetResponse, error)
+	Ping(context.Context, *GreetRequest) (*GreetResponse, error)
 }
 
 func RegisterGreetServiceHandler(srv *server.Server, hdlr GreetServiceHandler, opts ...server.ServiceOption) error {
@@ -129,6 +139,21 @@ var GreetService_ServiceInfo = server.ServiceInfo{
 			MethodFunc: func(ctx context.Context, args []interface{}, handler interface{}) (interface{}, error) {
 				req := args[0].(*GreetRequest)
 				res, err := handler.(GreetServiceHandler).Greet(ctx, req)
+				if err != nil {
+					return nil, err
+				}
+				return triple_protocol.NewResponse(res), nil
+			},
+		},
+		{
+			Name: "Ping",
+			Type: constant.CallUnary,
+			ReqInitFunc: func() interface{} {
+				return new(GreetRequest)
+			},
+			MethodFunc: func(ctx context.Context, args []interface{}, handler interface{}) (interface{}, error) {
+				req := args[0].(*GreetRequest)
+				res, err := handler.(GreetServiceHandler).Ping(ctx, req)
 				if err != nil {
 					return nil, err
 				}

@@ -5,7 +5,6 @@ metadata:
     app: httpbin
     service: httpbin
   name: httpbin
-  namespace: dubbo
 spec:
   ports:
     - name: http
@@ -31,7 +30,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: httpbin
-  namespace: dubbo
 spec:
   replicas: 1
   selector:
@@ -52,7 +50,7 @@ spec:
         version: v1
     spec:
       containers:
-        - image: registry.cn-hangzhou.aliyuncs.com/2456868764/dubbo-httpbin:1.0.4
+        - image: registry.cn-hangzhou.aliyuncs.com/2456868764/dubbo-httpbin:1.1.1
           imagePullPolicy: IfNotPresent
           name: httpbin
           ports:
@@ -170,7 +168,7 @@ spec:
               value: cluster.local
             - name: TRUST_DOMAIN
               value: cluster.local
-          image: registry.cn-hangzhou.aliyuncs.com/2456868764/pilot-agent:1.0.1
+          image: registry.cn-hangzhou.aliyuncs.com/2456868764/pilot-agent:1.1.0
           imagePullPolicy: IfNotPresent
           name: istio-proxy
           ports:

@@ -15,8 +15,8 @@ func NewResponseFromContext(c *gin.Context) model.Response {
 	response := model.Response{
 		Args:    make(map[string]string, len(query)),
 		Headers: make(map[string]string, len(headers)),
-		//Envs:    make(map[string]string),
-		Form: make(map[string]string, len(form)),
+		Envs:    make(map[string]string),
+		Form:    make(map[string]string, len(form)),
 	}
 	response.Method = c.Request.Method
 	response.Url = c.Request.URL.Path
@@ -33,7 +33,7 @@ func NewResponseFromContext(c *gin.Context) model.Response {
 	}
 
 	response.Origin = c.Request.Header.Get("Origin")
-	response.Envs = utils.GetAllEnvs()
+	//response.Envs = utils.GetAllEnvs()
 	response.HostName = utils.GetHostName()
 
 	var bodyBytes []byte // 我们需要的body内容

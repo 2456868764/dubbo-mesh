@@ -28,6 +28,7 @@ func main() {
 	r := gin.New()
 	r.GET("/greet", api.Greet)
 	r.GET("/ping", api.Ping)
+	r.GET("/hello", api.Hello)
 
 	r.Run(":9090")
 

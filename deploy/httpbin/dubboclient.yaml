@@ -6,7 +6,6 @@ metadata:
     app: dubboclient
     service: dubboclient
   name: dubboclient
-  namespace: dubbo
 spec:
   ports:
     - name: http
@@ -24,7 +23,6 @@ kind: ServiceAccount
 metadata:
   annotations:
   name: dubboclient
-  namespace: dubbo
 
 ---
 
@@ -32,7 +30,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dubboclient
-  namespace: dubbo
 spec:
   replicas: 1
   selector:
@@ -53,7 +50,7 @@ spec:
         version: v1
     spec:
       containers:
-        - image: registry.cn-hangzhou.aliyuncs.com/2456868764/dubbo-client:1.0.3
+        - image: registry.cn-hangzhou.aliyuncs.com/2456868764/dubbo-client:1.1.2
           imagePullPolicy: IfNotPresent
           name: dubboclient
           ports:
@@ -171,7 +168,7 @@ spec:
               value: cluster.local
             - name: TRUST_DOMAIN
               value: cluster.local
-          image: registry.cn-hangzhou.aliyuncs.com/2456868764/pilot-agent:1.0.1
+          image: registry.cn-hangzhou.aliyuncs.com/2456868764/pilot-agent:1.1.0
           imagePullPolicy: IfNotPresent
           name: istio-proxy
           ports:

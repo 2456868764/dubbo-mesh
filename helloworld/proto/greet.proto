@@ -27,8 +27,10 @@ message GreetRequest {
 
 message GreetResponse {
   string greeting = 1;
+  map<string, string> attachments = 2;
 }
 
 service GreetService {
   rpc Greet(GreetRequest) returns (GreetResponse) {}
+  rpc Ping(GreetRequest) returns (GreetResponse) {}
 }

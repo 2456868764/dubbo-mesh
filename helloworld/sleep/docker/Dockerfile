@@ -12,7 +12,3 @@ RUN useradd -m --uid 1337 istio-proxy  \
         && echo "istio-proxy ALL=NOPASSWD: ALL" >> /etc/sudoers \
 
 WORKDIR /
-ARG TARGETARCH
-COPY ${TARGETARCH:-amd64}/dubboapp  /usr/local/bin/dubboapp
-
-ENTRYPOINT ["/usr/local/bin/dubboapp"]
