@@ -168,7 +168,7 @@ kubectl exec "${LEGACY_SLEEP_POD}" -c sleep -n legacy -- curl http://dubboclient
 
 ```
 
-PERMISSIVE MODE 下 dubbo 和 legacy namespace 都可以访问， Dubbo namespace 下走 mTLS 认证传输， legacy namespace 下走明文传输。
+PERMISSIVE MODE 下 dubbo 和 legacy namespace 都可以访问， dubbo namespace 下走 mTLS 认证传输， legacy namespace 下走明文传输。
 
 ## 3. 应用 STRICT Mode
 
@@ -245,7 +245,7 @@ Last error is unknown: http request on mtls STRICT mode is forbidden.: unknown: 
 ```
 
 
-STRICT MODE 下 dubbo namespace 可以访问,而 legacy Namespace不可以访问， dubbo namespace 下走 mTLS 认证传输.
+STRICT MODE 下 dubbo namespace 可以访问,而 legacy namespace不可以访问， dubbo namespace 下走 mTLS 认证传输.
 
 ## 4. 应用 DISABLE Mode
 
@@ -434,6 +434,7 @@ EOF
 kubectl exec "${DUBBO_SLEEP_POD}" -c sleep -n dubbo \
  -- curl http://dubboclient.dubbo.svc:9090/greet -s -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImtleTEiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOlsiZGV2Il0sImV4cCI6MjAyNzU4NDc0MiwiaWF0IjoxNzEyMjI0NzQyLCJpc3MiOiJkdWJiby5hcGFjaGUub3JnIiwic3ViIjoic3BpZmZlOi8vY2x1c3Rlci5sb2NhbC9ucy9kdWJiby9zYS9kdWJib2NsaWVudCJ9.CRpc1EMSl6h1AthyaONdZxdrj5_bYb-LBN4QIIfapLebMPUxJ3i4ynUas9Mwo6I0ldcYE9flFtjprWuozIw-J6D6KeGqQUUVukejivRcWkTWeA0s4fxmievtZGofq1jXa40xjiC8ab8BgHBHQ6yufGOdEzaO028gPclApmRM8dsrnaeB_uKLLwrWd2b6Ha-FAyjLMJtauEXyAWs4cxoxnEXdfUGxMfKmWGzye4NBeHMyTfzwM0Fp4W54sUbDvknWJ9Tyo1XZez7FwwisF6KftvESO-XIIKwRqfbVNyl_cUXlTJySgvnoZJZ8yXZsd3c3bqn-bbJHSv8dSAEAwgCEEw" | jq
 
+
 {
   "request": {
     "args": {},
@@ -447,26 +448,26 @@ kubectl exec "${DUBBO_SLEEP_POD}" -c sleep -n dubbo \
     "origin": "",
     "url": "/greet",
     "envs": {},
-    "host_name": "dubboclient-5896c6c856-v9jbn",
+    "host_name": "dubboclient-5f6568557c-b9jj2",
     "body": ""
   },
   "response": {
     "greeting": "hello world !",
     "attachments": {
-      ":x-auth": "{\"iss\":\"dubbo.apache.org\",\"exp\":\"2034-04-02T09:59:02Z\",\"sub\":\"spiffe://cluster.local/ns/dubbo/sa/dubboclient\",\"iat\":\"2024-04-04T09:59:02Z\",\"nbf\":\"0001-01-01T00:00:00Z\"}",
-      ":x-host": "10.10.188.33:8001",
+      ":x-auth": "{\"iss\":\"dubbo.apache.org\",\"exp\":\"2034-04-02T09:59:02Z\",\"sub\":\"spiffe://cluster.local/ns/dubbo/sa/dubboclient\",\"aud\":[\"dev\"],\"iat\":\"2024-04-04T09:59:02Z\",\"nbf\":\"0001-01-01T00:00:00Z\"}",
+      ":x-host": "10.10.188.34:8001",
       ":x-method": "POST",
       ":x-mtls-mode": "PERMISSIVE",
       ":x-path": "/greet.GreetService/Greet",
       ":x-scheme": "https",
       ":x-spiffe": "spiffe://cluster.local/ns/dubbo/sa/dubboclient",
-      "INSTANCE_IP": "10.10.188.33",
-      "POD_NAME": "httpbin-66d47bf48-zvzlf",
+      "INSTANCE_IP": "10.10.188.34",
+      "POD_NAME": "httpbin-7d484bbf77-7hgnm",
       "accept": "*/*",
       "accept-encoding": "identity",
       "content-type": "application/grpc+proto",
       "grpc-accept-encoding": "gzip",
-      "grpc-timeout": "2999880u",
+      "grpc-timeout": "2999833u",
       "interface": "greet.GreetService",
       "retries": "",
       "te": "trailers",
@@ -479,7 +480,7 @@ kubectl exec "${DUBBO_SLEEP_POD}" -c sleep -n dubbo \
 ```
 
 用 token1 请求回复可以看到jwt token claim 内容已经解析出来，在 attachments 增加一个 key 为 :x-auth,
-值为 jwt token claims JSON: "{\"iss\":\"dubbo.apache.org\",\"exp\":\"2034-04-02T09:59:02Z\",\"sub\":\"spiffe://cluster.local/ns/dubbo/sa/dubboclient\",\"iat\":\"2024-04-04T09:59:02Z\",\"nbf\":\"0001-01-01T00:00:00Z\"}"
+值为 jwt token claims JSON: "{\"iss\":\"dubbo.apache.org\",\"exp\":\"2034-04-02T09:59:02Z\",\"sub\":\"spiffe://cluster.local/ns/dubbo/sa/dubboclient\",\"aud\":[\"dev\"],\"iat\":\"2024-04-04T09:59:02Z\",\"nbf\":\"0001-01-01T00:00:00Z\"}"
 
 # 5. 用错误 token 请求
 

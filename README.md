@@ -20,6 +20,11 @@ make prebuild
 
 ```
 
+## 测试环境
+
+![image](./deploy/httpbin/img.png)
+
+[测试文档说明连接](./deploy/httpbin/README.md) 
 
 # Reference 
 - [xds-protocol](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol#xds-protocol)
