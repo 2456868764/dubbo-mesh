@@ -94,7 +94,27 @@ func init() {
 }
 
 func Ping(c *gin.Context) {
-
+	////url := "127.0.0.1:8000"
+	//url := utils.GetDUBBOServerUrl()
+	//var (
+	//	cli    *client.Client
+	//	cliErr error
+	//	svc    greet.GreetService
+	//)
+	////url := "127.0.0.1:8000"
+	//cli, cliErr = client.NewClient(
+	//	client.WithClientURL(url),
+	//)
+	//if cliErr != nil {
+	//	logger.Errorf("can not init client: %v", cliErr)
+	//	return
+	//}
+	//
+	//svc, cliErr = greet.NewGreetService(cli)
+	//if cliErr != nil {
+	//	logger.Errorf("can not svc client: %v", cliErr)
+	//	return
+	//}
 	name := c.DefaultQuery("name", "")
 	request := NewResponseFromContext(c)
 	name = fmt.Sprintf("ping %s!", name)
@@ -117,6 +137,22 @@ func Hello(c *gin.Context) {
 
 func Greet(c *gin.Context) {
 	//url := "127.0.0.1:8000"
+	//url := utils.GetDUBBOServerUrl()
+	//var (
+	//	cli    *client.Client
+	//	cliErr error
+	//	svc    greet.GreetService
+	//)
+	////url := "127.0.0.1:8000"
+	//cli, cliErr = client.NewClient(
+	//	client.WithClientURL(url),
+	//)
+	//if cliErr != nil {
+	//	logger.Errorf("can not init client: %v", cliErr)
+	//	return
+	//}
+	//svc, cliErr = greet.NewGreetService(cli)
+
 	name := c.DefaultQuery("name", "")
 	request := NewResponseFromContext(c)
 	name = fmt.Sprintf("hello world %s!", name)

@@ -11,7 +11,7 @@ const (
 	EnvSubSystem   = "SUB_SYSTEM"
 	EnvNameSpace   = "POD_NAMESPACE"
 	EnvVersion     = "VERSION"
-	EnvPODIP       = "POD_IP"
+	EnvPODIP       = "INSTANCE_IP"
 	EnvNodeName    = "NODE_NAME"
 	DUBBOSERVERURL = "DUBBO_SERVER_URL"
 )

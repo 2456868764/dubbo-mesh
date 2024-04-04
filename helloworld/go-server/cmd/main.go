@@ -33,12 +33,16 @@ type GreetTripleServer struct {
 
 func (srv *GreetTripleServer) Greet(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	attachments := utils.ConvertAttachmentsToMap(ctx.Value(constant.AttachmentKey).(map[string]interface{}))
+	attachments[utils.EnvPodName] = utils.GetHostName()
+	attachments[utils.EnvPODIP] = utils.GetIP()
 	resp := &greet.GreetResponse{Greeting: req.Name, Attachments: attachments}
 	return resp, nil
 }
 
 func (srv *GreetTripleServer) Ping(ctx context.Context, req *greet.GreetRequest) (*greet.GreetResponse, error) {
 	attachments := utils.ConvertAttachmentsToMap(ctx.Value(constant.AttachmentKey).(map[string]interface{}))
+	attachments[utils.EnvPodName] = utils.GetHostName()
+	attachments[utils.EnvPODIP] = utils.GetIP()
 	resp := &greet.GreetResponse{Greeting: req.Name, Attachments: attachments}
 	return resp, nil
 }
