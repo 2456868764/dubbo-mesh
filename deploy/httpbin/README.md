@@ -482,7 +482,7 @@ kubectl exec "${DUBBO_SLEEP_POD}" -c sleep -n dubbo \
 用 token1 请求回复可以看到jwt token claim 内容已经解析出来，在 attachments 增加一个 key 为 :x-auth,
 值为 jwt token claims JSON: "{\"iss\":\"dubbo.apache.org\",\"exp\":\"2034-04-02T09:59:02Z\",\"sub\":\"spiffe://cluster.local/ns/dubbo/sa/dubboclient\",\"aud\":[\"dev\"],\"iat\":\"2024-04-04T09:59:02Z\",\"nbf\":\"0001-01-01T00:00:00Z\"}"
 
-# 5. 用错误 token 请求
+## 5. 用错误 token 请求
 
 ```shell
 kubectl exec "${DUBBO_SLEEP_POD}" -c sleep -n dubbo \
@@ -494,7 +494,7 @@ Last error is unknown: jwt token verify fail.: unknown: jwt token verify fail"
 ```
 错误 jwt token 请求返回错误内容
 
-# 6. 用不同的 audiences 请求， token3 的 audiences为 marketing
+## 6. 用不同的 audiences 请求， token3 的 audiences为 marketing
 
 ```shell
 kubectl exec "${DUBBO_SLEEP_POD}" -c sleep -n dubbo \
